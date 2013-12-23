@@ -13,17 +13,17 @@ I will provide some code for you to work around in the repo, though it is not fu
 
 Requirements:
 There should be 3 total pages:
-Student dashboard: should contain a live listing of teachers that make themselves available for a meeting
-teacher dashboard: should contain a toggling switch/button that makes themselves available for a meeting
-Shared/meeting page: should contain an arbitrary widget that when manipulated by one user, can be seen by the other
+* Student dashboard: should contain a live listing of teachers that make themselves available for a meeting
+* Teacher dashboard: should contain a toggling switch/button that makes themselves available for a meeting
+* Shared/meeting page: should contain an arbitrary widget that when manipulated by one user, can be seen by the other
 Student user actions:
-Seeing a list of available teachers, he is able to select one
-Seeing a confirmation dialog, he can either cancel the selection or confirm
-Seeing a widget on the meeting page, he can manipulate it visually
+* Seeing a list of available teachers, he is able to select one
+* Seeing a confirmation dialog, he can either cancel the selection or confirm
+* Seeing a widget on the meeting page, he can manipulate it visually
 Teacher user actions:
-Seeing a toggling button, he can select and deselect it
-Seeing a confirmation dialog, he can either cancel or confirm
-Seeing a widget on the meeting page, he can manipulate it visually
+* Seeing a toggling button, he can select and deselect it
+* Seeing a confirmation dialog, he can either cancel or confirm
+* Seeing a widget on the meeting page, he can manipulate it visually
 
 Estimation: <3 hours; don’t worry about appearance -- please just focus on functionality
 
