@@ -1,8 +1,9 @@
 Installation 
 ------------
 1) npm install
-2) grunt dbseed
-3) grunt 
+2) bower install
+3) grunt dbseed
+4) grunt ( Run the App )
 
 go go !!
 
