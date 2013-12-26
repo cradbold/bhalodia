@@ -87,7 +87,8 @@ var meetingSchema = mongoose.Schema({
 	datetime: {
 		type: Date,
 		required: true
-	}
+	},
+	teachers: []
 });
 
 exports.meeting = mongoose.model('meeting', meetingSchema);

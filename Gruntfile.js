@@ -18,19 +18,39 @@ module.exports = function(grunt) {
 				],
 				options: {
 					livereload: true,
-					tasks: ['develop']
-				},
-				css: {
-					files: ['public/css/*.css']
+					tasks: ['develop', 'requirejs']
+				}
+			},
+			css: {
+				files: ['public/css/*.css']
+			}
+		},
+		requirejs: {
+			js: {
+				options: {
+					baseUrl: "public/js",
+					mainConfigFile: "public/js/main.js",
+					name: 'main',
+					out: "public/build/main.js"
 				}
 			}
-		}
+			// css: {
+			// 	options: {
+			// 		baseUrl: 'public/css',
+			// 		cssIn: "public/css/main.css",
+			// 		out: "public/build/main.css",
+			// 		cssImportIgnore: null,
+			// 		optimizeCss: 'default'
+			// 	}
+			// }
+		},
 	});
 
+	// load tasks
 	grunt.loadNpmTasks('grunt-develop');
 	grunt.loadNpmTasks('grunt-contrib-watch');
-	grunt.registerTask('default', ['develop', 'watch']);
-
+	grunt.loadNpmTasks('grunt-contrib-requirejs');
+	grunt.registerTask('default', ['develop', 'requirejs', 'watch']);
 
 	// -- 
 	// Custom Task
