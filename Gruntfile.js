@@ -2,18 +2,51 @@ var db = require('./db/database');
 
 module.exports = function(grunt) {
 
-	grunt.registerTask('dbseed', 'seed the database', function() {
-//		grunt.task.run('dbdrop');
-		grunt.task.run('adduser:conrad:warmbold');
-		grunt.task.run('adduser:jordan:ginest');
-		grunt.task.run('adduser:kyle:pond');
+	grunt.initConfig({
+		pkg: grunt.file.readJSON('package.json'),
+		develop: {
+			server: {
+				file: 'app/server.js'
+			}
+		},
+		watch: {
+			scripts: {
+				files: [
+					'app/server.js',
+					'routes/*.js',
+					'db/*.js'
+				],
+				options: {
+					livereload: true,
+					tasks: ['develop']
+				},
+				css: {
+					files: ['public/css/*.css']
+				}
+			}
+		}
 	});
 
-	grunt.registerTask('adduser', 'add a user to the database', function(firstname, lastname) {
+	grunt.loadNpmTasks('grunt-develop');
+	grunt.loadNpmTasks('grunt-contrib-watch');
+	grunt.registerTask('default', ['develop', 'watch']);
+
+
+	// -- 
+	// Custom Task
+
+	grunt.registerTask('dbseed', 'seed the database', function() {
+		//		grunt.task.run('dbdrop');
+		grunt.task.run('adduser:conrad:cradbold@gmail.com:warmbold');
+		grunt.task.run('adduser:jayesh:jayeshbhalodia@ymail.com:jayesh001');
+	});
+
+	grunt.registerTask('adduser', 'add a user to the database', function(username, email, password) {
 
 		var user = new db.UserModel({
-			fname: firstname,
-			lname: lastname
+			username: username,
+			email: email,
+			password: password
 		});
 
 		// save call is async, put grunt into async mode to work
@@ -31,6 +64,7 @@ module.exports = function(grunt) {
 	});
 
 	grunt.registerTask('dbdrop', 'drop the database', function() {
+
 		// async mode
 		var done = this.async();
 
@@ -45,6 +79,6 @@ module.exports = function(grunt) {
 					done();
 				}
 			});
-		});		
+		});
 	});
 };
