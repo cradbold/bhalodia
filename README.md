@@ -1,3 +1,15 @@
+Installation 
+------------
+1) npm install
+2) grunt adduser
+3) grunt 
+
+go go !!
+
+
+Task Details
+------------
+
 Please host all code in the following public github account: https://github.com/cradbold/bhalodia 
 Please communicate with me either by google hangout/chat or email: cradbold@gmail.com
 
