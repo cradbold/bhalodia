@@ -36,17 +36,22 @@ module.exports = function(grunt) {
 	// Custom Task
 
 	grunt.registerTask('dbseed', 'seed the database', function() {
-		//		grunt.task.run('dbdrop');
-		grunt.task.run('adduser:conrad:cradbold@gmail.com:warmbold');
-		grunt.task.run('adduser:jayesh:jayeshbhalodia@ymail.com:jayesh001');
+		grunt.task.run('adduser:conrad:cradbold@gmail.com:warmbold:teacher');
+		grunt.task.run('adduser:jayesh:jayeshbhalodia@ymail.com:jayesh001:student');
+
+		grunt.task.run('addmeetings:MeetingATeam:LoremIpsum:"2014-01-01');
+		grunt.task.run('addmeetings:MeetingBTeam:LoremIpsum:"2014-01-02');
+		grunt.task.run('addmeetings:MeetingCTeam:LoremIpsum:"2014-01-03');
+		grunt.task.run('addmeetings:MeetingDTeam:LoremIpsum:"2014-01-04');
 	});
 
-	grunt.registerTask('adduser', 'add a user to the database', function(username, email, password) {
+	grunt.registerTask('adduser', 'add a user to the database', function(username, email, password, userType) {
 
 		var user = new db.UserModel({
 			username: username,
 			email: email,
-			password: password
+			password: password,
+			userType: userType
 		});
 
 		// save call is async, put grunt into async mode to work
@@ -58,6 +63,43 @@ module.exports = function(grunt) {
 				done(false);
 			} else {
 				console.log('saved user: ' + user.username);
+				done();
+			}
+		});
+	});
+
+	grunt.registerTask('addmeetings', 'add a meeting to the database', function(subject, description, datetime) {
+
+		var meetingForm = new db.meeting({
+			subject: subject,
+			description: description,
+			datetime: datetime
+		});
+
+		// save call is async, put grunt into async mode to work
+		var done = this.async();
+
+		meetingForm.save(function(err) {
+			if (err) {
+				console.log('Error: ' + err);
+				done(false);
+			} else {
+				console.log('saved Meeting data');
+				done();
+			}
+		});
+	});
+
+	grunt.registerTask('removeUser', 'Remove user from DB', function() {
+
+		var done = this.async();
+
+		db.UserModel.remove({}, function(err) {
+			if (err) {
+				console.log('Error: ' + err);
+				done(false);
+			} else {
+				console.log('Removed Users');
 				done();
 			}
 		});

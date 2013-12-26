@@ -36,7 +36,10 @@ module.exports = function(gc) {
 		})(req, res, next);
 	};
 
-	var getDashboard = function(req, res) {
+	var getDashboard = function(req, res) {		
+
+		console.log(req.user.userType);
+
 		res.render('dashboard', {
 			user: req.user,
 			message: req.session.messages

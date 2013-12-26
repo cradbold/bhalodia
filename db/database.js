@@ -37,6 +37,10 @@ var userSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
+	userType: {
+		type: String,
+		required: true
+	}
 });
 
 
@@ -68,3 +72,22 @@ userSchema.methods.comparePassword = function(candidatePassword, cb) {
 };
 
 exports.UserModel = mongoose.model('User', userSchema);
+
+// --
+
+var meetingSchema = mongoose.Schema({
+	subject: {
+		type: String,
+		required: true
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	datetime: {
+		type: Date,
+		required: true
+	}
+});
+
+exports.meeting = mongoose.model('meeting', meetingSchema);

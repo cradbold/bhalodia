@@ -1,12 +1,12 @@
 <% include header %>
 <% include navbar %>
-<% if (user.owner) { %>
+<% if (user.userType == 'owner') { %>
 	<p>OWNER</p>
 <% } %>
-<% if (user.student) { %>
+<% if (user.userType == 'student') { %>
 	<p>STUDENT</p>
 <% } %>
-<% if (user.tutor) { %>
+<% if (user.userType == 'teacher') { %>
 	<p>TUTOR</p>
 <% } %>
 <% include footer %>

@@ -1,7 +1,7 @@
 Installation 
 ------------
 1) npm install
-2) grunt adduser
+2) grunt dbseed
 3) grunt 
 
 go go !!
