@@ -31,7 +31,7 @@ module.exports = function(gc) {
 					return res.redirect('/#teacher');
 				}
 
-				return res.redirect('/dashboard');
+				return res.redirect('/#student');
 			});
 		})(req, res, next);
 	};

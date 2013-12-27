@@ -6,6 +6,7 @@ define(function(require) {
 		routes: {
 			'': 'index',
 			'teacher': 'teacher',
+			'student': 'student',
 			// 'inbox': 'inbox',
 			// 'inbox/compose': 'inboxCompose',
 			// 'contacts': 'contacts',
@@ -21,7 +22,7 @@ define(function(require) {
 		},
 
 		student: function() {
-			require('./../apps/teacher/app').run(viewManager);
+			require('./../apps/student/app').run(viewManager);
 		},
 
 		// inbox: function() {
