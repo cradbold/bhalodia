@@ -1,11 +1,16 @@
 var mongoose = require('mongoose');
 exports.mongoose = mongoose;
+
 var bcrypt = require('bcrypt');
 var SALT_ROUNDS = 12;
 
 // connection
-var uriString = 'mongodb://localhost/database';
-var mongoOptions = { db : { safe : true } };
+var uriString = 'mongodb://localhost/gc';
+var mongoOptions = {
+	db: {
+		safe: true
+	}
+};
 mongoose.connect(uriString, mongoOptions, function(err, res) {
 	if (err) {
 		console.log('Error connecting to: ' + uriString + ': ' + err);
@@ -14,10 +19,33 @@ mongoose.connect(uriString, mongoOptions, function(err, res) {
 	}
 });
 
-// schemas
+// --
+// User Schema
 
-// bcrypt
-UserSchema.pre('save', function(next) {
+var userSchema = mongoose.Schema({
+	username: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	email: {
+		type: String,
+		required: true,
+		unique: true
+	},
+	password: {
+		type: String,
+		required: true
+	},
+	userType: {
+		type: String,
+		required: true
+	}
+});
+
+
+// Event
+userSchema.pre('save', function(next) {
 	var user = this;
 	if (!user.isModified('password'))
 		return next();
@@ -33,8 +61,9 @@ UserSchema.pre('save', function(next) {
 	});
 });
 
-// password verification
-UserSchema.methods.comparePassword = function(candidatePassword, cb) {
+
+// Method
+userSchema.methods.comparePassword = function(candidatePassword, cb) {
 	bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
 		if (err)
 			return cb(err);
@@ -42,4 +71,24 @@ UserSchema.methods.comparePassword = function(candidatePassword, cb) {
 	});
 };
 
-// models
+exports.UserModel = mongoose.model('User', userSchema);
+
+// --
+
+var meetingSchema = mongoose.Schema({
+	subject: {
+		type: String,
+		required: true
+	},
+	description: {
+		type: String,
+		required: true,
+	},
+	datetime: {
+		type: Date,
+		required: true
+	},
+	teachers: []
+});
+
+exports.meeting = mongoose.model('meeting', meetingSchema);

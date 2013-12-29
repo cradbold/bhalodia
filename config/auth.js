@@ -1,6 +1,9 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
-var db = require('../db/gradecaddy');
+var db = require('../db/database');
+
+// @todo need clarify
+// var db = require('../db/gradecaddy');
 
 passport.serializeUser(function(user, done) {
 	done(null, user.id);
@@ -43,7 +46,7 @@ exports.ensureAuthenticated = function ensureAuthenticated(req, res, next) {
 	if (req.isAuthenticated()) {
 		return next();
 	}
-	res.redirect('/index');
+	res.redirect('/');
 };
 
 // Check for admin middleware, this is unrelated to passport.js

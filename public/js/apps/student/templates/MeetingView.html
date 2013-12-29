@@ -1,0 +1,23 @@
+<div class="meeting-box well">
+	<span class="pull-right"> {{datetime}}</span>
+	<h3>{{subject}}</h3>
+	<p class="desc">
+		{{description}}
+	</p>
+	<div class="row teachers-cn">
+		{{#if teachers}}
+			{{#each teachers}}
+				<div class="thumbnail col-lg-2">
+					<img class="img-circle" src="data:image/png;base64,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">
+					<div class="caption">
+						<h3>{{this}}</h3>
+						<span>{{index}}</span>
+					</div>
+				</div>
+			{{/each}}
+		{{else}}
+			<h3 class="text-center">There are not any Teachers!</h3>
+		{{/if}}
+	</div>
+</div>
+<hr>
