@@ -1,0 +1,94 @@
+<% include header %>
+<% include navbar %>
+<div class="container" id="js-teacher-dashboard">
+	<h1>
+		Meeting Board
+	</h1>
+	<hr>
+	<div class="jumbotron">
+        <h1>Are you available for meeting ?</h1>
+        <p class="lead">If you will turn on status for meeting then student will get chance to do meeting with you!</p>
+        <p>
+        	<%if (session.teacherAvailability) { %>
+        		<input class="bt-switch switch-large" type="checkbox" checked id="bt-switch" data-on-label="Yes" data-off-label="No">
+        	<% } else { %>
+        		<input class="bt-switch switch-large" type="checkbox" id="bt-switch" data-on-label="Yes" data-off-label="No">
+        	<% } %>
+    	</p>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmModel" tabindex="-1" role="dialog" aria-labelledby="confirmModelLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <!-- <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button> -->
+        <h4 class="modal-title" id="confirmModelLabel">Meeting Confirmation</h4>
+      </div>
+      <div class="modal-body">
+        <h3>
+        	<label id="js-student-nm"></label>, want to do meeting with you.        	
+        </h3>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Deny</button>
+        <button type="button" class="btn btn-primary" id="js-accept-request">Accept Request ( Do Meeting )</button>
+      </div>
+    </div><!-- /.modal-content -->
+  </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<script type="text/javascript">
+$(document).ready(function() {
+
+	var tokenID = '<%=user._id%>';
+	var socket = io.connect('http://localhost');
+	var meetingConfirmD = {};
+	
+	// --
+
+	$('#bt-switch').bootstrapSwitch();
+	$('#bt-switch').on('switch-change', function(e, data) {
+		socket.emit('teacherDashboardAction', { 
+			online: data.value,
+			tokenID: tokenID
+		});
+		Backbone.ajax({
+			method: 'POST',
+			url: '/teacher/availability/' + data.value,
+			success: function(err, response) {}
+		});
+	});
+
+	socket.on('meetingConfirm', function(data) {
+		if(data._token == tokenID) {
+			meetingConfirmD = data;
+			if(data.firstName) {
+				$("#js-student-nm").html(data.firstName + ' ' + data.lastName);
+			}
+			$('#confirmModel').modal({
+				show: true,
+				backdrop: 'static',
+				keyboard: false
+			});
+		}
+	});
+
+	$("#js-accept-request").click(function() {		
+		$('#confirmModel').modal('hide');
+		if(meetingConfirmD) {
+			socket.emit('teacherAcceptMeeting', meetingConfirmD);
+		}
+	});
+
+	socket.on('startMeeting', function(data) {
+		socket.on('startMeeting', function(data) {		
+			if(data._t == tokenID && data._accessToken) {
+				window.location = '/meeting/' + data._accessToken;
+			}
+		});
+	});	
+
+});
+</script>
+<% include footer %>

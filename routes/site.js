@@ -26,20 +26,48 @@ module.exports = function(gc) {
 					console.log(err);
 					return next(err);
 				}
-
-				if (user.userType == 'teacher') {
-					return res.redirect('/#teacher');
-				}
-
-				return res.redirect('/#student');
+				return res.redirect('/dashboard');
 			});
 		})(req, res, next);
 	};
 
 	var getDashboard = function(req, res) {
 
-		res.render('dashboard', {
+		var viewNm = 'student_dashboard';
+		if (req.user.teacher) {
+			viewNm = 'teacher_dashboard';
+		}
+
+		// --
+
+		res.render(viewNm, {
 			user: req.user,
+			session: req.session,
+			message: req.session.messages
+		});
+	};
+
+	var postTeacherAvailability = function(req, res) {
+
+		if (req.user.teacher) {
+			if (req.params['action'] == 'true') {
+				req.session.teacherAvailability = true;
+			} else {
+				req.session.teacherAvailability = false;
+			}
+			res.send(202, {
+				success: true
+			});
+		} else {
+			res.status(404, 'Page not founded!');
+		}
+	};
+
+	var getMeeting = function(req, res) {
+
+		res.render('meeting', {
+			user: req.user,
+			session: req.session,
 			message: req.session.messages
 		});
 	};
@@ -49,76 +77,29 @@ module.exports = function(gc) {
 		res.redirect('/');
 	};
 
-	var postTeacherAvailability = function(req, res) {
 
-		db.meeting.find({
-			_id: req.params['meetingId']
-		}).exec(function(err, data) {
-
-			if (data && data[0] !== undefined) {
-
-				var ateach = data[0].teachers || [];
-
-				if (req.params['action'] == 'true') {
-
-					ateach.push(req.user._id);
-
-					db.meeting.update({
-						_id: req.params['meetingId']
-					}, {
-						teachers: ateach
-					}).exec(function(err, data) {});
-
-				} else {
-
-					if (ateach) {
-
-						console.log("removeD!");
-
-						for (var index in ateach) {
-
-							if (!ateach[index]) {
-								delete ateach[index];
-							} else {
-								if ((ateach[index]).toString() == (req.user._id).toString()) {
-
-									console.log(ateach[index]);
-									delete ateach[index];
-									console.log(ateach[index]);
-								}
-							}
-						}
-
-						db.meeting.update({
-							_id: req.params['meetingId']
-						}, {
-							teachers: ateach
-						}).exec(function(err, data) {});
-					}
-				}
-			}
-			res.send('Done!');
-		});
-
-
-	};
-
-	gc.post('/teacher/availability/:meetingId/:action', postTeacherAvailability);
-
-
-	// gc.get('/index', getIndex);
-	// gc.post('/index', postIndex);
-
-	// @Todo need details about default page
 	gc.get('/', getIndex);
 	gc.post('/index', postIndex);
-
 	gc.get('/dashboard', gc.auth.ensureAuthenticated, getDashboard);
+	gc.get('/meeting/:id', gc.auth.ensureAuthenticated, getMeeting);
+	gc.post('/teacher/availability/:action', postTeacherAvailability);
 	gc.get('/logout', getLogout);
-
-	// gc.get('*', getIndex);
-
-	// @todo need clarify about it
-	// gc.get('/', getContact);
-	// gc.post('/', postContact);
 };
+
+// --
+// for manage teacher availibility
+
+var liveTeachers = [];
+module.exports.liveTeachers = liveTeachers;
+module.exports.getLiveTeachers = function() {
+	return liveTeachers;
+}
+module.exports.removeTeacher = function(_id) {
+	if (liveTeachers) {
+		for (var row in liveTeachers) {
+			if (liveTeachers[row]._id == _id) {
+				liveTeachers.splice(row, 1);
+			}
+		}
+	}
+}

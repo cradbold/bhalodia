@@ -159,4 +159,8 @@ module.exports = function(gc) {
 		});
 
 	});
+
+	gc.get(prefix + '/live-teachers', function(req, res) {
+		res.json(require(__dirname + '/site').getLiveTeachers() || []);
+	});
 };

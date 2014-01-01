@@ -1,12 +1,16 @@
 define(function(require) {
+
+	_require = require;
+
 	var Backbone = require('Backbone');
 	var viewManager = require('./viewManager');
 
 	var Router = Backbone.Router.extend({
 		routes: {
 			'': 'index',
-			'teacher': 'teacher',
-			'student': 'student',
+			'dashboard': 'index',
+			// 'teacher': 'teacher',
+			// 'student': 'student',
 			// 'inbox': 'inbox',
 			// 'inbox/compose': 'inboxCompose',
 			// 'contacts': 'contacts',

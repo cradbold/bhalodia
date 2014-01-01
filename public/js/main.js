@@ -35,6 +35,7 @@ require.config({
 
 	paths: {
 		jQuery: './../components/jquery/jquery',
+		teacherDashbaord: './teacher_dashboard',
 		Underscore: './../components/underscore/underscore',
 		underscore: './../components/require-handlebars-plugin/hbs/underscore',
 		Backbone: './../components/backbone/backbone',
@@ -46,7 +47,7 @@ require.config({
 	}
 });
 
-require(['core/router', 'core/client', 'Backbone'], function(Router, client, Backbone) {
+require(['jQuery', 'bootstrapSwitch', 'core/router', 'core/client', 'Backbone', , 'teacherDashbaord'], function($, bs, Router, client, Backbone) {
 
 	var app = {
 		root: '/'

@@ -1,8 +1,10 @@
 // dependencies
 var gcRootDir = __dirname;
 var express = require('express'); // web framework
-var path = require('path'); // file path utilities
 var gc = express();
+var server = require('http').createServer(gc);
+var path = require('path'); // file path utilities
+var io = require('socket.io').listen(server);
 
 gc.passport = require('passport');
 gc.auth = require('../config/auth');
@@ -33,7 +35,15 @@ gc.configure(function() {
 var api = require('../routes/api')(gc);
 var site = require('../routes/site')(gc);
 
+
+
 // start
-gc.listen(8181, function() {
+server.listen(8181, function() {
     console.log('Express server listening in %s mode...', gc.settings.env);
+});
+
+// --
+
+io.sockets.on('connection', function(socket) {
+    require('../routes/socket')(gc, socket);    
 });

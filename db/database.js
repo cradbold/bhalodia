@@ -23,6 +23,13 @@ mongoose.connect(uriString, mongoOptions, function(err, res) {
 // User Schema
 
 var userSchema = mongoose.Schema({
+	firstName: {
+		type: String,
+		required: true
+	},
+	lastName: {
+		type: String
+	},
 	username: {
 		type: String,
 		required: true,
@@ -37,10 +44,13 @@ var userSchema = mongoose.Schema({
 		type: String,
 		required: true
 	},
-	userType: {
-		type: String,
-		required: true
+	student: {
+		type: Boolean
+	},
+	teacher: {
+		type: Boolean
 	}
+
 });
 
 
@@ -76,19 +86,11 @@ exports.UserModel = mongoose.model('User', userSchema);
 // --
 
 var meetingSchema = mongoose.Schema({
-	subject: {
-		type: String,
-		required: true
-	},
-	description: {
-		type: String,
-		required: true,
-	},
-	datetime: {
-		type: Date,
-		required: true
-	},
-	teachers: []
+	roomId: String,
+	attendees: {},
+	textfieldValue: {},
+	timeStart: Date,
+	timeEnd: Date
 });
 
 exports.meeting = mongoose.model('meeting', meetingSchema);
