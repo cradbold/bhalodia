@@ -82,11 +82,9 @@ $(document).ready(function() {
 	});
 
 	socket.on('startMeeting', function(data) {
-		socket.on('startMeeting', function(data) {		
-			if(data._t == tokenID && data._accessToken) {
-				window.location = '/meeting/' + data._accessToken;
-			}
-		});
+		if(data._t == tokenID && data._accessToken) {
+			window.location = '/meeting/' + data._accessToken;
+		}
 	});	
 
 });

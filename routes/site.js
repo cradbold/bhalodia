@@ -65,10 +65,26 @@ module.exports = function(gc) {
 
 	var getMeeting = function(req, res) {
 
-		res.render('meeting', {
-			user: req.user,
-			session: req.session,
-			message: req.session.messages
+		gc.db.meeting.findOne({
+			_id: req.params.id
+		}, function(err, meeting) {
+
+			if (err || !meeting) {
+				res.redirect('/');
+				return;
+			}
+
+			if (req.user._id == meeting.attendees.student || req.user._id == meeting.attendees.teacher) {
+				res.render('meeting', {
+					user: req.user,
+					session: req.session,
+					roomID: req.params.id,
+					message: req.session.messages
+				});
+			} else {
+				res.redirect('/');
+				return;
+			}
 		});
 	};
 

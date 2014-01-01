@@ -93,6 +93,12 @@ module.exports = function(gc, socket) {
 					_s: data._id
 				});
 
+				socket.emit('startMeeting', {
+					_accessToken: dbRes._id,
+					_t: data._token,
+					_s: data._id
+				});
+
 			}
 		});
 	});

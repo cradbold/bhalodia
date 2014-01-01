@@ -1,122 +1,45 @@
 <% include header %>
 <% include navbar %>
-<div class="container" id="js-teacher-list">
-	<h1>
-		Meeting
-	</h1>
-	<hr>
-	<div class="jumbotron">
-        <h1>Are you want to do meeting ?</h1>
-        <p class="lead">Click on send meeting request button to get confirmation about meeting!</p>        
-    </div>
-    <div class="row">
-    	<div class="col-lg-12 js-teacher-lists" ></div>
-    </div>
-</div>
-
-<div class="hide" id="js-teacher-li">
-	<div class="loop">
-		<div class='row'>
-			<div class='col-lg-8'><h2 class='teacher-name'></h2></div>
-			<div class='col-lg-4'>
-				<h2><button class="meeting-btn btn btn-large btn-success pull-right" data-id="">Send Meeting Request</button></h2>
-			</div>
-		</div>
-		<hr>
-	</div>
-</div>
-
+<link rel="stylesheet" href="http://media.muchosmedia.com/brainwave/style.css" type="text/css">
+<script type="text/javascript" src="http://media.muchosmedia.com/scribblar/scripts/includes.js"></script>
 <script type="text/javascript">
+	var targetID = "scribblar";
+	var flashvars = {};
+	flashvars.userid = "0"; // to allow an anonymous guest pass 0 */
+	flashvars.roomid = "r0b4jw"; // the roomid for the room you'd like to access - substitute this for a valid roomid */
+	// flashvars.roomid = "<%=roomID%>";
+	flashvars.preferredLocales = "en_US";
+	flashvars.username = "John"; // optional: if you pass userid=0 you may also pass a username to skip the username prompt and log the user in using that username
+	var params = {};
+	params.allowscriptaccess = "always";
+	var attributes = {};
+	attributes.id = "scribblar";
+	attributes.name = "scribblar";
+	swfobject.embedSWF("http://media.muchosmedia.com/scribblar/v3/main.swf", "alternate", "100%", "100%", "11.1.0", "http://media.muchosmedia.com/swfobject/expressInstall.swf", flashvars, params, attributes);
+</script>
 
-$(document).ready(function() {
+<div id="alternate">
+	<a href="http://www.adobe.com/go/getflashplayer">This page requires the latest version of Adobe Flash. Please download it now.<br>
+		<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" border="0" alt="Get Adobe Flash Player" />
+	</a>
+</div>
 
-	var tokenID = '<%=user._id%>';
-	var socket = io.connect('http://localhost');
-	
-	// --
+<!-- <div class="container" id="js-teacher-list">
+	<h1> Meeting </h1>
+	<hr>
+	<div style="height:300px;overflow:auto;"></div>
+	<form method="post" class="form-horizontal" id="meetingFrm" >
+		<input type="text" name="msg" placeholder="write your msg"><br>
+	</form>
+</div> -->
 
-	var liveTeacherModel = Backbone.Model.extend({
-		urlRoot: '/api/v0.1/live-teachers',
-		url: '/api/v0.1/live-teachers',
-	});
-
-    var liveTeacherCollection = Backbone.Collection.extend({        
-        url: '/api/v0.1/live-teachers',        
-        model : liveTeacherModel,
-        read:function() { }
-    });
-
-	var liveItemView = Backbone.View.extend({
-		render: function() {
-
-			this.$el = $('#js-teacher-li .loop').clone();
-			this.$(".teacher-name").html(this.model.get('firstName') + ' ' + this.model.get('lastName'));
-			this.$(".meeting-btn").attr('data-id', this.model.get('_id'));
-			this.$(".meeting-btn").bind( "click", function() {
-
-				var self = this;  				
-  				$(this).html('Sending a request...');
-  				$(this).prop('disabled', true);
-  				
-  				setTimeout(function() {
-  					$(self).html('Request Sent ( wait for few minutes )');
-  				}, 1000);
-
-  				socket.emit('getMeetingConfirm', { tokenID: tokenID, teacherID: $(this).attr('data-id')});
-			});
-			return this;			
-		}
-	});
-
-    var liveView = Backbone.View.extend({
-		render: function() {
-
-			this.$el = $('#js-teacher-list');
-			var mails = this.$('.js-teacher-lists');
-			mails.html('');
-
-			this.collection.forEach(function(mail) {
-
-				var view = new liveItemView({
-					model: mail
-				});
-				
-				mails.append(view.render().$el);
-
-			}, this);
-
-			return this;
-		}
-	});
-
-	// --
-
-	var _liveTeacherCollection = new liveTeacherCollection();
-	var teacherLiveList = null;
-	_liveTeacherCollection.fetch({
-		success: function(liveTeachers) {
-			teacherLiveList = new liveView({ $el : $('#js-teacher-list'), collection: liveTeachers});
-			teacherLiveList.render();
-		}
-	});
-
-	socket.on('refreshLiveTeacher', function (data) {
-		_liveTeacherCollection.fetch({
-			success: function(liveTeachers) {
-				console.log(liveTeachers);
-				teacherLiveList.collection = liveTeachers;
-				teacherLiveList.render();
-			}
-		});
-	});
-
-	socket.on('startMeeting', function(data) {
-		
-		if(data._s == tokenID && data._accessToken) {
-			window.location = '/meeting/' + data._accessToken;
-		}
-	});
-
-});
+<script>
+	// $(document).ready(function() {
+	// 	$("#meetingFrm").submit(function() {			
+	// 		var socket = io.connect('http://localhost');
+	// 		socket.on('')
+	// 		return false;
+	// 	});
+	// });	
 </script>
 <% include footer %>
