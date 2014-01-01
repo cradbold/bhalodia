@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<% include header %>
+	<link rel="stylesheet" href="http://media.muchosmedia.com/brainwave/style.css" type="text/css">
+	<script type="text/javascript" src="http://media.muchosmedia.com/scribblar/scripts/includes.js"></script>
+	<script type="text/javascript">
+		var targetID = "scribblar";
+		var flashvars = {};
+		flashvars.userid = "0"; // to allow an anonymous guest pass 0 */
+		flashvars.roomid = "r0b4jw"; // the roomid for the room you'd like to access - substitute this for a valid roomid */
+		flashvars.preferredLocales = "en_US";
+		flashvars.username = "John"; // optional: if you pass userid=0 you may also pass a username to skip the username prompt and log the user in using that username
+		var params = {};
+		params.allowscriptaccess = "always";
+		var attributes = {};
+		attributes.id = "scribblar";
+		attributes.name = "scribblar";
+		swfobject.embedSWF("http://media.muchosmedia.com/scribblar/v3/main.swf", "alternate", "100%", "100%", "11.1.0", "http://media.muchosmedia.com/swfobject/expressInstall.swf", flashvars, params, attributes);
+	</script>
+</head>
+<body scroll="no">
+	<div id="alternate">
+		<a href="http://www.adobe.com/go/getflashplayer">This page requires the latest version of Adobe Flash. Please download it now.<br>
+			<img src="http://www.adobe.com/images/shared/download_buttons/get_flash_player.gif" border="0" alt="Get Adobe Flash Player" />
+		</a>
+	</div>
+</body>
+</html>
